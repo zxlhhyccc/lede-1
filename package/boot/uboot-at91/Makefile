@@ -8,11 +8,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_VERSION:=linux4sam-2022.04
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=3
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/linux4sam/u-boot-at91.git
-PKG_MIRROR_HASH:=56bbac45f71aaf39b365661db2a76c6c8415e27f7147b27bb58312b12756c8f3
+PKG_MIRROR_HASH:=82229503800d9a624bb8de5f8d7a84cb35fd512a1550c6f1d46958cd47d4807b
 PKG_SOURCE_VERSION:=7b59654a486d39dc8e0343e2554699b8a79c7a54
 
 include $(INCLUDE_DIR)/u-boot.mk
@@ -107,8 +107,8 @@ define U-Boot/sama5d4_xplained_nandflash
   BUILD_DEVICES:=microchip_sama5d3-xplained
 endef
 
-define U-Boot/sama5d27_som1_ek_mmc1
-  NAME:=SAMA5D27 SOM1 Ek (SDCard1)
+define U-Boot/sama5d27_som1_ek_mmc
+  NAME:=SAMA5D27 SOM1 Ek (SDCard0)
   BUILD_SUBTARGET:=sama5
   BUILD_DEVICES:=microchip_sama5d27-som1-ek
 endef
@@ -163,7 +163,7 @@ UBOOT_TARGETS := \
 	sama5d4_xplained_mmc \
 	sama5d4_xplained_spiflash \
 	sama5d4_xplained_nandflash\
-	sama5d27_som1_ek_mmc1 \
+	sama5d27_som1_ek_mmc \
 	sama5d27_som1_ek_qspiflash \
 	sama5d27_wlsom1_ek_mmc \
 	sama5d27_wlsom1_ek_qspiflash \

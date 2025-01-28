@@ -5,7 +5,7 @@
 
 / {
 	compatible = "zyxel,nwa50ax", "mediatek,mt7621-soc";
-	model = "ZyXEL NWA50AX";
+	model = "Zyxel NWA50AX";
 
 	aliases {
 		led-boot = &led_system_green;
@@ -41,5 +41,16 @@
 			gpios = <&gpio 30 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_RESTART>;
 		};
+	};
+};
+
+&ethernet {
+	pinctrl-0 = <&mdio_pins>, <&rgmii1_pins>;
+};
+
+&state_default {
+	gpio {
+		groups = "uart3", "rgmii2";
+		function = "gpio";
 	};
 };

@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=valgrind
-PKG_VERSION:=3.19.0
+PKG_VERSION:=3.23.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=http://sourceware.org/pub/valgrind/
-PKG_HASH:=dd5e34486f1a483ff7be7300cc16b4d6b24690987877c3278d797534d6738f02
+PKG_SOURCE_URL:=https://sourceware.org/pub/valgrind/
+PKG_HASH:=c5c34a3380457b9b75606df890102e7df2c702b9420c2ebef9540f8b5d56264d
 
 PKG_MAINTAINER:=Felix Fietkau <nbd@nbd.name>
 PKG_LICENSE:=GPL-2.0+
@@ -22,7 +22,7 @@ PKG_CPE_ID:=cpe:/a:valgrind:valgrind
 PKG_FIXUP = autoreconf
 PKG_INSTALL := 1
 PKG_BUILD_PARALLEL := 1
-PKG_USE_MIPS16:=0
+PKG_BUILD_FLAGS:=no-mips16
 PKG_SSP:=0
 
 STRIP:=:
@@ -97,17 +97,14 @@ else
 	BITS := 32bit
 endif
 
+ifeq ($(CONFIG_arm_v7),y)
+	CONFIGURE_ARGS += --host=armv7-openwrt-linux$(if $(TARGET_SUFFIX),-$(TARGET_SUFFIX))
+endif
+
 CONFIGURE_ARGS += \
 	--enable-lto \
 	--enable-tls \
-	--without-x \
 	--without-mpicc \
-	--without-uiout \
-	--disable-valgrindmi \
-	--disable-tui \
-	--disable-valgrindtk \
-	--without-included-gettext \
-	--with-pagesize=4 \
 
 define Package/valgrind/install
 	$(INSTALL_DIR) $(1)/usr/bin

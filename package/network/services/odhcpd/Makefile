@@ -8,13 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=odhcpd
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=$(PROJECT_GIT)/project/odhcpd.git
-PKG_SOURCE_DATE:=2022-03-22
-PKG_SOURCE_VERSION:=860ca900e41c5d0f98cc85e67b39977f6f2cb355
-PKG_MIRROR_HASH:=555712a1e25d197e52808a0d5e42bf0d48a8b61fe7c8aad1a02a7c09f0b8b8a3
+PKG_MIRROR_HASH:=f6e1c18551a00e01229fa12caa7b3fe33ad82785150fedcbe615fcc651ba2876
+PKG_SOURCE_DATE:=2024-05-08
+PKG_SOURCE_VERSION:=a29882318a4ccb3ae26f7cc0145e06ad4ead224b
 
 PKG_MAINTAINER:=Hans Dedecker <dedeckeh@gmail.com>
 PKG_LICENSE:=GPL-2.0
@@ -95,7 +95,6 @@ endif
 define Package/odhcpd/install
 	$(INSTALL_DIR) $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/odhcpd $(1)/usr/sbin/
-	$(INSTALL_BIN) ./files/odhcpd-update $(1)/usr/sbin/
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/odhcpd.init $(1)/etc/init.d/odhcpd
 	$(INSTALL_DIR) $(1)/etc/uci-defaults

@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ubox
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=$(PROJECT_GIT)/project/ubox.git
-PKG_SOURCE_DATE:=2022-07-17
-PKG_SOURCE_VERSION:=46a33b8be298e1e700e56f05b5ba4f06daf83efa
-PKG_MIRROR_HASH:=551560cc481dd5d12e1dc81f368af8be29027891ce091ba71fee8fe5d9afcb87
+PKG_SOURCE_DATE:=2024-04-26
+PKG_SOURCE_VERSION:=85f1053019caf4cd333795760950235ee4529ba7
+PKG_MIRROR_HASH:=9e3fb6ab94854405fb91626a673b0547a061582c552ce719691be1bc8818da6c
 CMAKE_INSTALL:=1
 
 PKG_LICENSE:=GPL-2.0
@@ -18,13 +18,10 @@ PKG_MAINTAINER:=John Crispin <john@phrozen.org>
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-TARGET_CFLAGS += -Wno-error=format-truncation
-TARGET_LDFLAGS += $(if $(CONFIG_USE_GLIBC),-lrt)
-
 define Package/ubox
   SECTION:=base
   CATEGORY:=Base system
-  DEPENDS:=+libubox +ubusd +ubus +libubus +libuci +USE_GLIBC:librt
+  DEPENDS:=+libubox +ubusd +ubus +libubus +libuci
   TITLE:=OpenWrt system helper toolbox
   ALTERNATIVES:=\
     100:/sbin/rmmod:/sbin/kmodloader \
@@ -47,9 +44,10 @@ endef
 define Package/logd
   SECTION:=base
   CATEGORY:=Base system
-  DEPENDS:=+libubox +libubus +libblobmsg-json +USE_GLIBC:librt
+  DEPENDS:=+libubox +libubus +libblobmsg-json +libudebug
   TITLE:=OpenWrt system log implementation
   USERID:=logd=514:logd=514
+  ALTERNATIVES:=200:/sbin/logread:/usr/libexec/logread-ubox
 endef
 
 define Package/getrandom/install
@@ -66,10 +64,12 @@ define Package/ubox/install
 endef
 
 define Package/logd/install
-	$(INSTALL_DIR) $(1)/sbin $(1)/etc/init.d/
+	$(INSTALL_DIR) $(1)/sbin $(1)/usr/libexec/ $(1)/etc/init.d/ $(1)/usr/share/acl.d
 
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/{logd,logread} $(1)/sbin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/logd $(1)/sbin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/logread $(1)/usr/libexec/logread-ubox
 	$(INSTALL_BIN) ./files/log.init $(1)/etc/init.d/log
+	$(INSTALL_DATA) ./files/logd.json $(1)/usr/share/acl.d
 endef
 
 $(eval $(call BuildPackage,ubox))

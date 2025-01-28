@@ -6,12 +6,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nftables
-PKG_VERSION:=1.0.4
+PKG_VERSION:=1.1.1
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:=https://netfilter.org/projects/$(PKG_NAME)/files
-PKG_HASH:=927fb1fea1f685a328c10cf791eb655d7e1ed49d310eea5cb3101dfd8d6cba35
+PKG_HASH:=6358830f3a64f31e39b0ad421d7dadcd240b72343ded48d8ef13b8faf204865a
 
 PKG_MAINTAINER:=
 PKG_LICENSE:=GPL-2.0
@@ -19,6 +19,8 @@ PKG_LICENSE_FILES:=COPYING
 
 PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
+
+PKG_BUILD_FLAGS:=lto
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -60,8 +62,10 @@ ifeq ($(BUILD_VARIANT),json)
   CONFIGURE_ARGS += --with-json
 endif
 
-TARGET_CFLAGS += -flto
-TARGET_LDFLAGS += -flto
+define Build/Patch
+	rm -v $(PKG_BUILD_DIR)/tests/shell/*.{orig,rej}
+	$(call Build/Patch/Default,)
+endef
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/lib $(1)/usr/include
